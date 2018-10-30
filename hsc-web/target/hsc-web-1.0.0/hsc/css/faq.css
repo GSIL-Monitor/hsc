@@ -1,0 +1,315 @@
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td {
+    margin: 0;
+    padding: 0;
+}
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+*:before, *:after {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+html {
+	overflow-y: scroll;
+}
+body {
+    background: #fff;
+    color: #595961;
+    font-size: 14px;
+    font-family: "Arial", "Microsoft YaHei", "黑体", "宋体", sans-serif;
+}
+.cff {
+	color: #FF4E4E;
+}
+.bgcfa {
+	background-color: #FAFAFA;
+}
+.header {
+    height: 214px;
+    background: url("https://041001.zhonglunnet.com/ptweb/images/faq/banner.png") no-repeat top center  #232718;
+}
+.bannerContent {
+	width: 1010px;
+	height: 214px;
+}
+.searchContent {
+	left: 289px;
+}
+#searchValue {
+	width:628px;
+	height:42px;
+	background:rgba(255,255,255,1);
+	border-radius:2px 0px 0px 2px;
+	border:1px solid rgba(209,209,209,1);
+	padding: 0 16px;
+	line-height: 42px;
+	color: #999999;
+}
+#btnsubmit {
+	width:90px;
+	height:42px;
+	background:rgba(0,136,255,1);
+	border: none;
+	right: -90px;
+}
+.guessresult {
+	width: 628px;
+	background-color: #fff;
+	box-shadow:0px 2px 4px 0px rgba(0,0,0,0.08);
+}
+.guessresult ul li {
+	list-style: none;
+	padding: 0 16px;
+	height: 38px;
+	line-height: 38px;
+	border-bottom: 1px solid #EFEFEF;
+	cursor: pointer;
+}
+.guessresult ul li:hover {
+	background-color: #fafafa;
+}
+.guessresult ul li a {
+	color: #999;
+	text-decoration: none;
+}
+.hotsearch a {
+	color: white;
+	text-decoration: none;
+	margin-right: 6px;
+}
+.menuContent {
+	background:rgba(238,240,244,1);
+}
+.menu { 
+	width: 1010px;
+	height: 60px;
+	background-color: #EEF0F4;
+}
+.menu li {
+	float: left;
+	list-style: none;
+	margin-right: 18px;
+}
+.menu li a {
+	display: block;
+	float: left;
+	width: 124px;
+	height: 60px;
+	line-height: 60px;
+	font-size: 16px;
+	color:#595961;
+	text-decoration: none;
+	text-align: center;
+}
+.menu .current a {
+	color:rgba(0,136,255,1);
+	border-bottom: 2px solid #0088FF;
+}
+.menu li:hover {
+	background-color: #E5E7EB;
+}
+.contentwrap {
+	width: 1010px;
+}
+.left {
+	width: 216px;
+}
+
+
+.catlist {
+	border: 1px solid #EFEFEF;
+	border-bottom: 0;
+}
+.catMenu {
+	text-indent: 40px;
+}
+.catMenu .catTitle {
+	height:52px;
+	cursor: pointer;
+	line-height: 52px;
+	border-bottom:1px solid #EFEFEF;
+}
+.catMenu .catTitle.down:before {
+	top: 19px;
+	right: 12px;
+	transform: rotate(-45deg);
+}
+.catMenu .catTitle:before {
+	top: 22px;
+	right: 12px;
+	transform: rotate(135deg);
+}
+.catMenu .catTitle:before, .catMenu .catTitle.down:before {
+	position: absolute;
+	content: "";
+	width:8px;
+	height: 8px;
+	border-left: 2px solid #ccc;
+	border-bottom: 2px solid #ccc;
+}
+/* .catMenu:last-child ul li:last-child {
+	border-bottom: 0 !important;
+} */
+.catMenu ul li {
+	line-height: 52px;
+	border-bottom:1px solid #EFEFEF;
+	list-style: none;
+	padding-left: 16px;
+}
+.catMenu ul .current, .catMenu ul li:hover {
+	background:#E5F3FF;
+	border-left: 2px solid #0088FF;
+	text-indent: 38px;
+}
+.catMenu ul .current a, .catMenu ul li a:hover, .articlelist ul li a:hover, .articlelist ul li:hover {
+	color: #0088FF;
+}
+.catMenu ul li a {
+	display: block;
+	text-decoration: none;
+	color: #595961;
+}
+
+
+.right {
+	width: 758px;
+	min-height: 520px;
+}
+.articlelist ul li {
+	height: 40px;
+	line-height: 40px;
+	border-bottom: 1px solid #EFEFEF;
+	padding-left: 12px;
+	position: relative;
+}
+.articlelist ul li:before {
+	position: absolute;
+	content: "·";
+	font-size: 20px;
+	left: 0px;
+}
+.articlelist ul li a, .pageInfo ul li a {
+	color: #595961;
+	text-decoration: none;
+}
+.articlelist ul li:last-child {
+	border-bottom: none;
+}
+.pageInfo ul {
+	text-align: right;
+}
+.pageInfo ul li {
+	display: inline-block;
+	margin-right: 10px;
+	border:1px solid #EFEFEF;
+	border-radius: 6px;
+}
+.pageInfo ul li:hover, .pageInfo ul .current {
+	background-color:#2589FF;
+	border:1px solid #2589FF;
+}
+.pageInfo ul li a {
+	display: block;
+	padding: 8px 12px;
+}
+.pageInfo ul li a:hover, .pageInfo ul .current a {
+	color: #fff;
+}
+
+/*联系我们*/
+.contactuswrap {
+	width: 754px;
+}
+.contactus {
+	min-height: 320px;
+}
+.contactus ul li {
+	list-style: none;
+	height: 66px;
+	line-height: 66px;
+}
+.contactus ul li img {
+	position: absolute;
+}
+
+/*搜索结果*/
+.searchCate {
+	height:32px;
+	background:rgba(245,248,250,1);
+	border-top: 1px solid #EFEFEF;
+}
+.searchCate ul li {
+	display: inline-block;
+	margin-left: 24px;
+	height: 32px;
+	position: relative;
+}
+.searchCate ul .current:before {
+	position: absolute;
+	content: "";
+	width: 100%;
+	height: 2px;
+	background-color: #21D376;
+	bottom: 1px;
+	/* width: 83px;
+	left:50%;
+	margin-left:-41px; */
+}
+.searchCate ul li a {
+	display: block;
+	line-height: 32px;
+	height: 32px;
+	text-decoration: none;
+	color: #595961;
+}
+
+/*搜索结果页*/
+.resultlist ul li {
+	border-bottom: 1px solid #EFEFEF;
+	list-style: none;
+}
+.resultlist ul li:last-child {
+	border:none;
+}
+.resultlist ul li .title {
+
+}
+.resultlist ul li .title a {
+	color: #0088FF;
+	text-decoration: none;
+}
+
+/*文章详情页*/
+.articleArea {
+
+}
+.articleArea .title {
+	width: 550px;
+}
+.articleArea .watchvideo {
+	width:170px;
+	height:36px;
+	border-radius:2px;
+	border:1px solid rgba(0,136,255,1);
+}
+.articleArea .watchvideo:after {
+	position: absolute;
+	content: "";
+	width: 16px;
+	height: 16px;
+	background: url("https://041001.zhonglunnet.com/ptweb/images/faq/play-circle.png") no-repeat;
+	top: 9px;
+	left: 17px;
+}
+.articleArea .watchvideo a {
+	color: #0088FF;
+	text-decoration: none;
+	display: block;
+	height: 100%;
+}
+.articleArea .content p {
+	margin-bottom: 30px;
+}

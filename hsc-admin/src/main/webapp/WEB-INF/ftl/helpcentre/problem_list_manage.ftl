@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<!-- BEGIN HEAD -->
+<head>
+    <title>中仑帮助中心</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="中仑帮助中心" name="description"/>
+    <meta content="中仑帮助中心" name="author"/>
+    <link type="text/css" rel="stylesheet" href="https://041001.zhonglunnet.com/gyl/css/common-min.css"/>
+    <link type="text/css" rel="stylesheet" href="http://091801.zhonglunnet.com/ptweb/css/faq.css?version=1.0.1"/>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(window).scroll(function () {
+                var top = $(document).scrollTop();
+                var innerHeight = $(window).innerHeight();
+                var scrolltotop = $('.scrolltotop');
+                if (top > (innerHeight - 100)) {
+                    scrolltotop.fadeIn();
+                } else {
+                    scrolltotop.fadeOut();
+                }
+            })
+        })
+    </script>
+</head>
+<body>
+
+<div class="w100p pr header">
+    <div class="bannerContent m0a pr">
+        <img src="https://041001.zhonglunnet.com/ptweb/images/faq/logo.png" class="pa t54"/>
+
+        <div class="searchContent pa t54">
+            <div class="searchForm mb14">
+                <input autocomplete="off" type="text"
+                       onKeypress="javascript:if(event.keyCode == 32)event.returnValue = false;"
+                       placeholder="输入问题关键字，找到答案" id="searchValue" class="fs16"/>
+                <input type="text" value="立即搜索" id="btnsubmit" onclick="immediatelySearch()"
+                       class="white fs16 pa t0 tac" style="cursor:pointer" readonly="readonly">
+
+                <div class="guessresult pa t42 dn zi99999">
+                    <ul class="fs14"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w100p menuContent oh mb24">
+    <div class="menu m0a" id="cutMenu">
+        <ul>
+            <li class="current" onclick="cutMenu(this,2)" style="cursor:pointer"><a>新手指导</a></li>
+            <li onclick="cutMenu(this,1)" style="cursor:pointer"><a>问题汇总</a></li>
+            <li onclick="cutMenu(this,3)" style="cursor:pointer"><a>联系我们</a></li>
+        </ul>
+    </div>
+</div>
+<div class="page-content-wrapper">
+    <input type="hidden" name="helptype" id="helptype" value="2"/>
+    <input type="hidden" name="searchhelptype" id="searchhelptype" value="2"/>
+    <input type="hidden" name="page" id="page" value="1"/>
+    <input type="hidden" name="searchpage" id="searchpage" value="1"/>
+    <input type="hidden" name="titleid" id="titleid" value=""/>
+    <input type="hidden" name="level1moduleid" id="level1moduleid" value=""/>
+    <input type="hidden" name="nglevel1moduleid" id="nglevel1moduleid" value="${nglevel1moduleid}"/>
+    <input type="hidden" name="pslevel1moduleid" id="pslevel1moduleid" value="${pslevel1moduleid}"/>
+    <input type="hidden" name="level2moduleid" id="level2moduleid" value=""/>
+    <input type="hidden" name="cacheSearchValue" id="cacheSearchValue" value=""/>
+
+    <div class="contentwrap m0a" id="problem">
+        <div class="left fl mb100">
+            <div class="catlist">
+                <div id="removeNewGuidanceCurrent">
+                <#if newGuidanceLevel1ModelList?? >
+                    <#list newGuidanceLevel1ModelList as level1List>
+                        <div class="catMenu pr">
+                            <#if level1List_index==0>
+                                <div class="catTitle bgcfa">${level1List.levelmodulename!''}</div>
+                            <ul class="">
+                            <#else>
+                                <div class="catTitle down">${level1List.levelmodulename!''}</div>
+                            <ul class="dn">
+                            </#if>
+                            <#if level1List.level2ModelList?? >
+                                <#list level1List.level2ModelList as level2List>
+                                    <li class=""
+                                        onclick="refreshTitle(${level1List.level1moduleid},${level2List.level2moduleid},(this))">
+                                        <a href="javascript:void(0)"
+                                        >${level2List.levelmodulename!''}</a>
+                                    </li>
+                                </#list>
+                            </#if>
+                        </ul>
+                        </div>
+                    </#list>
+                </#if>
+                </div>
+                <div id="removeProblemSummaryCurrent" style="display: none">
+                <#if problemSummaryLevel1ModelList?? >
+                    <#list problemSummaryLevel1ModelList as level1List>
+                        <div class="catMenu pr">
+                            <#if level1List_index==0>
+                                <div class="catTitle bgcfa">${level1List.levelmodulename!''}</div>
+                            <ul class="">
+                            <#else>
+                                <div class="catTitle down">${level1List.levelmodulename!''}</div>
+                            <ul class="dn">
+                            </#if>
+                            <#if level1List.level2ModelList?? >
+                                <#list level1List.level2ModelList as level2List>
+                                    <li class=""
+                                        onclick="refreshTitle(${level1List.level1moduleid},${level2List.level2moduleid},(this))">
+                                        <a href="javascript:void(0)"
+                                        >${level2List.levelmodulename!''}</a>
+                                    </li>
+                                </#list>
+                            </#if>
+                        </ul>
+                        </div>
+                    </#list>
+                </#if>
+                </div>
+            </div>
+        </div>
+        <div id="replacehtml">
+            <div class="right fl oh ml32">
+                <div class="articlelist mb52">
+                    <ul class="fs16" id="titlelist">
+
+                    </ul>
+                </div>
+                <div class="pageInfo">
+                    <ul id="pagelist">
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div id="titledetail" style="display:none">
+            <div class="right fl oh ml32">
+                <div class="c7f fs12 pb16">
+                    <span id="level1modulename"></span> > <span id="level2modulename"></span>
+                </div>
+                <div class="articleArea pr">
+                    <h1 class="fs24 fwn title mb20" id="title"></h1>
+
+                    <div class="watchvideo pa r0 t0" id="videoshow">
+                        <!-- 下面的a标签的href的值 给第三方的视频链接 -->
+                        <a href="" class="pl44 pt7" target="_blank" id="videourl">
+                            观看完整视频教程
+                        </a>
+                    </div>
+                    <div class="content lh26 fs14" id="titletext">
+                    </div>
+                    <div class="pf r0 b0 scrolltotop dn">
+                        <img onclick="$(window).scrollTop(0)"
+                             src="https://041001.zhonglunnet.com/ptweb/images/faq/scrolltop.png" alt="回到顶部"
+                             title="回到顶部">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cb"></div>
+    </div>
+    <div class="contactuswrap m0a mt72" id="contact" style="display: none">
+        <div class="contactus pr">
+            <h2 class="fs24 mb36 fwn pt5">联系我们</h2>
+            <ul class="fs16">
+                <li class="pr">
+                    <img class="pa t18" src="https://041001.zhonglunnet.com/ptweb/images/faq/phone.png"/>
+                    <span class="ml40">400-993-3621</span>
+                </li>
+                <li class="pr">
+                    <img class="pa t18" src="https://041001.zhonglunnet.com/ptweb/images/faq/shake.png"/>
+                    <span class="ml40">0512-67582423</span>
+                </li>
+                <li class="pr">
+                    <img class="pa t18" src="https://041001.zhonglunnet.com/ptweb/images/faq/QQ.png"/>
+                    <span class="ml40">3256739093</span>
+                </li>
+            </ul>
+            <img src="https://041001.zhonglunnet.com/ptweb/images/faq/contactusimg.png" class="pa t0 r0">
+        </div>
+    </div>
+    <div class="contentwrap m0a" id="searchContact" style="display: none">
+        <p class="fs14 mt32 mb13">
+            搜索“<span class="cff" id="searchProblem"></span>”相关问题，共<span id="searchSum"></span>条数据
+        </p>
+
+        <div class="searchCate mb15">
+            <ul>
+                <li class="current" onclick="cutSearchMenu(this,2)"><a id="newGuidanceNum"></a></li>
+                <li onclick="cutSearchMenu(this,1)"><a id="problemSummaryNum"></a></li>
+            </ul>
+        </div>
+        <div class="resultlist mb60">
+            <ul>
+                <li id="searchList">
+
+                </li>
+            </ul>
+        </div>
+        <div class="pageInfo mb100">
+            <ul id="searchPage">
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    //分页  每页数量
+    var pageSize = 10;
+    //总数据
+    var dataList = ${dataList};
+    //初始化页面数据
+    getTitleList(dataList, 2, "initial");
+
+    //数据分页
+    function pagination(pageNo, pageSize, array) {
+        var offset = (pageNo - 1) * pageSize;
+        return (offset + pageSize >= array.length) ? array.slice(offset, array.length) : array.slice(offset, offset + pageSize);
+    }
+
+    /**
+     * 获取分页图标
+     * @param page
+     * @param pageSize
+     * @param totalRecords
+     */
+    function pageTitle(page, pageSize, totalRecords, type) {
+        if (totalRecords == 0) {
+            return;
+        }
+        var pageCount = Math.ceil(totalRecords / pagesize);
+        if (page > pageCount) {
+            page = pageCount;
+        }
+        if (page < 1) {
+            page = 1
+        }
+        if (pageCount > 1) {
+            var start = 1;
+            var end = pageCount;
+            if (page != 1) {
+                var nownum = page - 1;
+                if (type == "pagelist") {
+                    $('#pagelist').append('<li><a href="javascript:void(0)" onclick="jumpPage(' + nownum + ',' + totalRecords + ')"><</a></li>')
+                } else if (type == "searchPage") {
+                    $('#searchPage').append('<li><a href="javascript:void(0)" onclick="jumpSearchPage(' + nownum + ',' + totalRecords + ')"><</a></li>')
+                }
+
+            }
+            if (page < 3) {
+                start = 1;
+                end = 5;
+            } else if (page > (pageCount - 2)) {
+                start = pageCount - 4;
+                end = pageCount;
+            } else {
+                start = (page - 2);
+                end = (page + 2);
+            }
+            if (start > 1) {
+                start = 1;
+            }
+            if (end < pageCount) {
+                end = pageCount;
+            }
+            let pagelist = function (start, end) {
+                let nums = [];
+                for (let i = start + 1; i < end; i++) {
+                    nums.push(i);
+                }
+                return nums;
+            }
+            for (var i = 0; i < pagelist.length; i++) {
+                var num = i + 1;
+                if (page == (i + 1)) {
+                    if (type == "pagelist") {
+                        $('#pagelist').append('<li class="current"><a href="javascript:void(0)" onclick="jumpPage(' + num + ',' + totalRecords + ')">' + num + '</a></li>')
+                    } else if (type == "searchPage") {
+                        $('#searchPage').append('<li class="current"><a href="javascript:void(0)" onclick="jumpSearchPage(' + num + ',' + totalRecords + ')">' + num + '</a></li>')
+                    }
+                } else {
+                    if (type == "pagelist") {
+                        $('#pagelist').append('<li><a href="javascript:void(0)" onclick="jumpPage(' + num + ',' + totalRecords + ')">' + num + '</a></li>')
+                    } else if (type == "searchPage") {
+                        $('#searchPage').append('<li><a href="javascript:void(0)" onclick="jumpSearchPage(' + num + ',' + totalRecords + ')">' + num + '</a></li>')
+                    }
+
+                }
+            }
+            if (page != pageCount) {
+                var agopage = page + 1;
+                if (type == "pagelist") {
+                    $('#pagelist').append('<li><a href="javascript:void(0)" onclick="jumpPage(' + agopage + ',' + totalRecords + ')">></a></li>')
+                } else if (type == "searchPage") {
+                    $('#searchPage').append('<li><a href="javascript:void(0)" onclick="jumpSearchPage(' + agopage + ',' + totalRecords + ')">></a></li>')
+                }
+
+            }
+        }
+    }
+
+    $('.catTitle').click(function () {
+        $(this).toggleClass('down bgcfa').next().toggle().end().parent().siblings().find('.catTitle').attr('class', 'catTitle down').next().hide();
+    });
+
+    /**
+     * 分页跳转
+     * @param no
+     * @param totalRecords
+     */
+    function jumpPage(no, totalRecords) {
+        var pageCount = Math.ceil(totalRecords / pagesize);
+
+        if (no > pageCount) {
+            no = pageCount;
+        }
+        if (no < 1) {
+            no = 1;
+        }
+        $('#page').val(no);
+        var helptype = $('#helptype').val();
+
+        getTitleList(dataList, helptype, "tabs");
+    }
+
+    /**
+     * 切换二级模块
+     * @param helptype
+     */
+    function refreshTitle(level1moduleid, level2moduleid, obj) {
+        $("#problem li").removeClass('current');
+        $(obj).addClass('current');
+        var helptype = $('#helptype').val();
+        $('#page').val(1)
+        $('#level1moduleid').val(level1moduleid);
+        $('#level2moduleid').val(level2moduleid);
+
+        getTitleList(dataList, helptype, "tabs");
+    }
+
+    /**
+     * 切换菜单
+     * @param helptype
+     */
+    function cutMenu(obj, helptype) {
+        $('#searchContact').hide();
+        $("#cutMenu li").removeClass('current');
+        $("#problem li").removeClass('current');
+        $(obj).addClass('current');
+        $('#helptype').val(helptype);
+        $('#page').val(1);
+        $('#level2moduleid').val("");
+        if (helptype == 2) {
+            $('#contact').hide();
+            $('#problem').show();
+            $('#removeProblemSummaryCurrent').hide();
+            $('#removeNewGuidanceCurrent').show();
+            getTitleList(dataList, helptype, "initial");
+        } else if (helptype == 1) {
+            $('#contact').hide();
+            $('#problem').show();
+            $('#removeNewGuidanceCurrent').hide();
+            $('#removeProblemSummaryCurrent').show();
+            getTitleList(dataList, helptype, "initial");
+        } else {
+            $('#problem').hide();
+            $('#contact').show();
+        }
+    }
+
+    /**
+     * 替换对应标题详情
+     * @param titleid 标题id
+     */
+    function refreshTitleDetail(titleid) {
+
+        let arr = dataList.filter(v => {
+                    return  v.titleid == titleid
+                }
+    )
+        for (var i = 0; i < arr.length; i++) {
+            var data = arr[i];
+            $('#title').html("");
+            $('#title').html(data.title);
+            $('#level1modulename').html(data.level1modulename);
+            $('#level2modulename').html(data.level2modulename);
+
+            if (data.videourl) {
+                $("#videourl").attr("href", data.videourl);
+                $("#videoshow").show();
+            } else {
+                $("#videoshow").hide();
+            }
+            $('#titletext').empty();
+            $('#titletext').append('' + data.detail + '');
+        }
+        $('#problem').show();
+        $('#searchContact').hide();
+        $('#replacehtml').hide();
+        $('#titledetail').show();
+    }
+    /**
+     * 获取标题列表数据
+     * @param dataList
+     */
+    function getTitleList(dataList, helptype, cuttype) {
+        $("#titlelist li").remove();
+        $("#pagelist li").remove();
+        $('#replacehtml').show();
+        $('#titledetail').hide();
+        var helptype = $('#helptype').val();
+        var level1moduleid = 0;
+        var level2moduleid = null;
+        if (helptype == "2") {
+            if (cuttype == "initial") {
+                level1moduleid = $('#nglevel1moduleid').val()
+            } else if (cuttype == "tabs") {
+                level1moduleid = $('#level1moduleid').val()
+                level2moduleid = $('#level2moduleid').val();
+                if (level2moduleid == "") {
+                    level1moduleid = $('#nglevel1moduleid').val()
+                }
+            }
+
+        } else if (helptype == "1") {
+            if (cuttype == "initial") {
+                level1moduleid = $('#pslevel1moduleid').val()
+            } else if (cuttype == "tabs") {
+                level1moduleid = $('#level1moduleid').val()
+                level2moduleid = $('#level2moduleid').val();
+                if (level2moduleid == "") {
+                    level1moduleid = $('#pslevel1moduleid').val()
+                }
+            }
+        }
+        var page = $('#page').val();
+        let arr = dataList.filter(v => {
+                    if(level2moduleid)
+        {
+            return v.helptype == helptype && v.level1moduleid == level1moduleid && v.level2moduleid == level2moduleid
+        }
+    else
+        {
+            return v.helptype == helptype && v.level1moduleid == level1moduleid
+        }
+    }
+    )
+        var totalRecords = arr.length;
+        var pageTrades = pagination(page, pageSize, arr);
+        for (var i = 0; i < pageTrades.length; i++) {
+            var data = pageTrades[i];
+            $('#titlelist').append('<li><a href="javascript:void(0)" onclick="refreshTitleDetail(' + data.titleid + ')">' + data.title + '</a></li>')
+        }
+        pageTitle(page, pageSize, totalRecords, "pagelist");
+    }
+
+    $("body").click(function () {
+        hideGuess();
+    });
+
+    //搜索框输入值发生变化的时候
+    $("body").on("keyup", "#searchValue", function () {
+
+        var value = $.trim($(this).val());
+        if (value == "") {
+            hideGuess();
+            return false;
+        }
+        let data = dataList.filter(v => {
+                    if (v.title.indexOf(value) != -1)
+        {
+            return v;
+        }
+
+    })
+        var trades = pagination(1, pageSize, data);
+        searchDate(trades)
+    });
+
+    function hideGuess() {
+        $('.guessresult').find("ul").html('').end().hide();
+    }
+
+    //搜索下拉类别筛选
+    function searchDate(trades) {
+        var str = '';
+        if (trades.length > 0) {
+            $.each(trades, function (index, value) {
+
+                str += '<li onclick="refreshTitleDetail(' + value.titleid + ')"><a>' + value.title + '</a></li>';
+            })
+
+            if (str.length > 0) {
+                $('.guessresult').find("ul").html(str).end().show();
+            }
+        } else {
+            hideGuess();
+        }
+    }
+
+    //搜索点击事件
+    function immediatelySearch() {
+        $('.tac.mt100.mb50').remove();
+        var searchhelptype = $('#searchhelptype').val();
+        var searchvalue = $('#searchValue').val();
+        $('#cacheSearchValue').val(searchvalue);
+        if (searchvalue == "") {
+            return;
+        }
+        let searchtitlelist = [];
+        let ngtitlelist = dataList.filter(v => {
+                    if (v.title.indexOf(searchvalue) != -1)
+        {
+            return v.helptype == 2;
+        }
+    })
+
+        let pstitlelist = dataList.filter(v => {
+                    if (v.title.indexOf(searchvalue) != -1)
+        {
+            return v.helptype == 1;
+        }
+    })
+
+        if (searchhelptype == "2") {
+            searchtitlelist = ngtitlelist;
+        } else {
+            searchtitlelist = pstitlelist;
+        }
+        $('#newGuidanceNum').html("新手指导 (" + ngtitlelist.length + ")");
+        $('#problemSummaryNum').html("问题汇总 (" + pstitlelist.length + ")");
+        $('#searchSum').html(ngtitlelist.length + pstitlelist.length);
+        $('#searchProblem').html(searchvalue);
+
+        getSearchTitleList(searchtitlelist, 1);
+        $('#contact').hide();
+        $('#problem').hide();
+        $('#searchContact').show();
+    }
+
+    //获取搜索也列表数据
+    function getSearchTitleList(searchtitlelist, page) {
+        $("#searchList h3").remove();
+        $("#searchPage li").remove();
+        var trades = pagination(page, pageSize, searchtitlelist);
+        var searchValue = $.trim($('#cacheSearchValue').val());
+        if (trades.length == 0) {
+            $('#searchList').append(' <div class="tac mt100 mb50"><img class="mb20 mt20" src="https://041001.zhonglunnet.com/ptweb/images/faq/cry.png"><br> <span class="c7f">没有搜索到相关数据</span> </div>')
+        } else {
+            for (var i = 0; i < trades.length; i++) {
+                var data = trades[i];
+                $('#searchList').append('<h3 class = "fs18 title lh40 pt10" ><a class= "fs18 fwn" onclick="refreshTitleDetail(' + data.titleid + ')">' + data.title.replace(searchValue, "<span class='red'>" + searchValue + "</span>") + '</a ></h3 >')
+            }
+            pageTitle(page, pageSize, searchtitlelist.length, "searchPage");
+        }
+
+    }
+
+    //切换搜索列表菜单
+    function cutSearchMenu(obj, searchhelptype) {
+        $("#searchContact li").removeClass('current');
+        $('.tac.mt100.mb50').remove();
+        $(obj).addClass('current');
+        $('#searchhelptype').val(searchhelptype);
+        $('#searchpage').val(1);
+        var cacheSearchValue = $('#cacheSearchValue').val();
+        var searchhelptype = $('#searchhelptype').val();
+        let searchDataList = dataList.filter(v => {
+                    if (v.title.indexOf(cacheSearchValue) != -1)
+        {
+            return v.helptype == searchhelptype;
+        }
+    })
+        getSearchTitleList(searchDataList, 1);
+    }
+
+    //搜索页面分页跳转
+    function jumpSearchPage(no, totalRecords) {
+        var pageCount = parseInt((totalRecords + pageSize - 1) / pageSize);
+
+        if (no > pageCount) {
+            no = pageCount;
+        }
+        if (no < 1) {
+            no = 1;
+        }
+        $('#searchpage').val(no);
+        var cacheSearchValue = $('#cacheSearchValue').val();
+        var searchhelptype = $('#searchhelptype').val();
+        let searchDataList = dataList.filter(v => {
+                    if (v.title.indexOf(cacheSearchValue) != -1)
+        {
+            return v.helptype == searchhelptype;
+        }
+    })
+        getSearchTitleList(searchDataList, no);
+    }
+
+
+</script>
+</html>

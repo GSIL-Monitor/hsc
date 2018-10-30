@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="shardName.com.wgb.service.impl.module.ModuleServiceImpl" jdbcTimeout="5">
+
+    <sql id="querymodulePageList">
+        <![CDATA[
+        SELECT
+            a.id,
+            a.pid,
+            a.level,
+            a.helptype,
+            a.systemplatform,
+            a.ordernum,
+            a.levelmodulename,
+            a.updatetime
+            FROM
+        help_level_module a
+        where 1=1
+        and level=1
+        <#if levelmodulename?? && levelmodulename != ''>
+				and	 a.levelmodulename  like '%' :levelmodulename '%'
+		</#if>
+		 <#if systemplatform?? && systemplatform != ''>
+				and	 a.systemplatform=:systemplatform
+		</#if>
+		 <#if helptype?? && helptype != ''>
+				and	 a.helptype=:helptype
+		</#if>
+		order by a.ordernum
+           	]]>
+    </sql>
+    <sql id="savenewmodule">
+        <![CDATA[
+           insert into help_level_module(
+                systemplatform,
+                helptype,
+                levelmodulename,
+                ordernum,
+                createuser,
+                createtime
+            )values(
+                :systemplatform,
+                :helptype,
+                :levelmodulename,
+                :ordernum,
+                 <#if loginuserid?? && loginuserid!=''>
+                  :loginuserid,
+                     <#else>
+                       10,
+                </#if>
+                now()
+            )
+    	]]>
+    </sql>
+
+    <sql id="querymodule2PageList">
+        <![CDATA[
+        SELECT
+            a.id,
+            a.pid,
+            a.level,
+            a.helptype,
+            a.systemplatform,
+            a.ordernum,
+            a.levelmodulename,
+            a.updatetime
+            FROM
+        help_level_module a
+        where 1=1
+        and
+         a.pid= :id
+		order by a.ordernum
+           	]]>
+    </sql>
+    <sql id="updatemodule">
+        <![CDATA[
+           update help_level_module set
+                systemplatform = :systemplatform,
+                helptype = :helptype,
+                levelmodulename = :levelmodulename,
+                ordernum = :ordernum,
+                <#if loginuserid?? && loginuserid != ''>
+                   updateuser=:loginuserid,
+               <#else>
+                   updateuser=10,
+           </#if>
+                updatetime= now()
+           where
+                id = :id
+        ]]>
+    </sql>
+    <sql id="deletemodule">
+        <![CDATA[
+	delete  from help_level_module  where  id= :id  or pid= :id
+        ]]>
+    </sql>
+    <sql id="savenew2module">
+        <![CDATA[
+           insert into help_level_module(
+                pid,
+                levelmodulename,
+                ordernum,
+                createuser,
+                createtime,
+                level
+            )values(
+                 :id,
+                :levelmodulename,
+                :ordernum,
+                 <#if loginuserid?? && loginuserid!=''>
+                  :loginuserid,
+                     <#else>
+                       10,
+                </#if>
+                now(),
+                2
+            )
+    	]]>
+    </sql>
+    <sql id="updatemodule2">
+        <![CDATA[
+           update help_level_module set
+                pid= :level1modulid,
+                levelmodulename = :levelmodulename,
+                ordernum = :ordernum,
+                <#if loginuserid?? && loginuserid != ''>
+                   updateuser=:loginuserid,
+               <#else>
+                   updateuser=10,
+           </#if>
+                updatetime= now()
+           where
+                id = :id
+        ]]>
+    </sql>
+    <sql id="deletemodule2">
+        <![CDATA[
+	delete  from help_level_module  where  id= :pid
+        ]]>
+    </sql>
+    <sql id="querymoduleInfo">
+        <![CDATA[
+        SELECT
+            a.id,
+            a.pid,
+            a.level,
+            a.helptype,
+            a.systemplatform,
+            a.ordernum,
+            a.levelmodulename,
+            a.updatetime
+            FROM
+        help_level_module a
+        where 1=1
+        <#if id?? && id != ''>
+				and	 a.id=:id
+		</#if>
+           	]]>
+    </sql>
+    <sql id="querymodule2Info">
+        <![CDATA[
+        SELECT
+            a.id,
+            a.pid,
+            a.level,
+            a.helptype,
+            a.systemplatform,
+            a.ordernum,
+            a.levelmodulename,
+            a.updatetime
+            FROM
+        help_level_module a
+        where 1=1
+        and level=1
+        <#if id?? && id != ''>
+				and	 a.id=:pid
+		</#if>
+           	]]>
+    </sql>
+    <sql id="querynum">
+        <![CDATA[
+    SELECT COUNT(*) AS num FROM help_level_module WHERE ordernum= :ordernum and level=1
+           	]]>
+    </sql>
+
+    <sql id="querynum2">
+        <![CDATA[
+    SELECT COUNT(*) AS num FROM help_level_module WHERE ordernum= :ordernum and level=2 and pid=:id
+           	]]>
+    </sql>
+
+    <sql id="getLevel1ModelList">
+        <![CDATA[
+		SELECT
+		  levelmodulename,
+		  id as level1moduleid
+		FROM
+		  help_level_module
+		WHERE
+          level = 1
+		  AND  helptype = :helptype
+		  AND  systemplatform= 1
+		ORDER BY ordernum
+    	]]>
+    </sql>
+
+    <sql id="getLevel1ModelListForApp">
+        <![CDATA[
+		SELECT
+		  levelmodulename,
+		  id as level1moduleid
+		FROM
+		  help_level_module
+		WHERE
+          level = 1
+		  AND  systemplatform= 2
+		ORDER BY ordernum
+    	]]>
+    </sql>
+
+    <sql id="getLevel2ModelList">
+        <![CDATA[
+		SELECT
+		  levelmodulename,
+		  id as level2moduleid
+		FROM
+		  help_level_module
+		WHERE pid = :level1moduleid
+		AND   level = 2
+	    AND  systemplatform= 1
+		ORDER BY ordernum
+    	]]>
+    </sql>
+
+    <sql id="getLevel2ModelListForApp">
+        <![CDATA[
+		SELECT
+		  levelmodulename,
+		  id as level2moduleid
+		FROM
+		  help_level_module
+		WHERE pid = :level1moduleid
+		AND   level = 2
+	    AND  systemplatform= 2
+		ORDER BY ordernum
+    	]]>
+    </sql>
+
+
+</sqlMap>

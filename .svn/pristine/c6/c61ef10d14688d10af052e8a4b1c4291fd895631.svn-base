@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="shardName.com.wgb.service.impl.BaseServiceImpl"
+        jdbcTimeout="5">
+
+    <sql id="updateSerialIndex">
+        <![CDATA[
+         update pub_codes set codemax = codemax + :len
+         where shopcode = :shopcode and codename = :codename
+         <#if branchcode?? && branchcode != ''>
+         	and branchcode = :branchcode
+         </#if>
+      ]]>
+    </sql>
+
+    <sql id="getSerialIndex">
+        <![CDATA[
+         select codemax from pub_codes where shopcode = :shopcode and codename = :codename
+         <#if branchcode?? && branchcode != ''>
+         	and branchcode = :branchcode
+         </#if>
+      ]]>
+    </sql>
+
+    <sql id="insertSerialIndex">
+        <![CDATA[
+		  insert into pub_codes(shopcode, branchcode, codemax, codename)
+		  values(
+		    :shopcode,
+		    <#if branchcode?? && branchcode != ''>
+		    :branchcode,
+		    <#else>
+		    '',
+		    </#if>
+		    :codemax,
+		    :codename
+		  )
+      ]]>
+    </sql>
+
+</sqlMap>

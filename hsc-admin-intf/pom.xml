@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>hsc-pom</artifactId>
+        <groupId>com.wgb.hsc</groupId>
+        <version>1.0.0</version>
+        <relativePath>../hsc-pom/pom.xml</relativePath>
+    </parent>
+    <artifactId>hsc-admin-intf</artifactId>
+    <name>hsc-admin-intf</name>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.wgb.hsc</groupId>
+            <artifactId>hsc-util</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.wgb.hsc</groupId>
+            <artifactId>hsc-common-intf</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+</project>

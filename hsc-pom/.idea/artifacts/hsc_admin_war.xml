@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="hsc-admin:war">
+    <output-path>$PROJECT_DIR$/../hsc-admin/target</output-path>
+    <root id="archive" name="hsc-admin-1.0.0.war">
+      <element id="artifact" artifact-name="hsc-admin:war exploded" />
+    </root>
+  </artifact>
+</component>

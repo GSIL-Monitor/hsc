@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.wgb.dubbo:dubbo-intf:2.4.51">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/wgb/dubbo/dubbo-intf/2.4.51/dubbo-intf-2.4.51.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/wgb/dubbo/dubbo-intf/2.4.51/dubbo-intf-2.4.51-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/wgb/dubbo/dubbo-intf/2.4.51/dubbo-intf-2.4.51-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

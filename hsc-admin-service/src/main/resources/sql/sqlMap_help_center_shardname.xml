@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sqlMap namespace="shardName.com.wgb.service.impl.helpcenter.HelpCenterServiceImpl" jdbcTimeout="5">
+
+    <sql id="queryhelpcenterPageList">
+        <![CDATA[
+        SELECT
+            a.id,
+            a.title as questiontitle,
+            a.systemplatform,
+            a.helptype,
+            a.level1modulename,
+            a.level1moduleid,
+            a.level2moduleid,
+            a.level2modulename,
+            a.updatetime,
+            a.detail,
+            a.videourl
+            FROM
+        help_center a
+        where 1=1
+        <#if questiontitle?? && questiontitle != ''>
+				and	 a.title   like '%' :questiontitle '%'
+		</#if>
+		 <#if systemplatform?? && systemplatform != ''>
+				and	 a.systemplatform=:systemplatform
+		</#if>
+		 <#if helptype?? && helptype != ''>
+				and	 a.helptype=:helptype
+		</#if>
+		<#if level1moduleid?? && level1moduleid != ''>
+				and	 a.level1moduleid=:level1moduleid
+		</#if>
+		<#if level2moduleid?? && level2moduleid != ''>
+				and	 a.level2moduleid=:level2moduleid
+		</#if>
+		<#if level1modulename?? && level1modulename != ''>
+				and	 a.level1modulename=:level1modulename
+		</#if>
+		 <#if level2modulename?? && level2modulename != ''>
+				and	 a.level2modulename=:level2modulename
+		</#if>
+         <#if starttime?? && starttime != ''>
+		         and  a.updatetime  BETWEEN  :starttime  and DATE_ADD( :endtime,INTERVAL 1 DAY )
+		    </#if>
+		order by a.updatetime desc
+           	]]>
+    </sql>
+
+    <sql id="saveHelpInfo">
+        <![CDATA[
+           insert into help_center(
+                systemplatform,
+                helptype,
+                level1modulename,
+                level2modulename,
+                level1moduleid,
+                level2moduleid,
+                videourl,
+                title,
+                detail,
+                createuser,
+                createtime
+            )values(
+                :systemplatform,
+                :helptype,
+                :level1modulename,
+                :level2modulename,
+                 :level1moduleid,
+                 :level2moduleid,
+                 <#if url?? && url!=''>
+                   :url,
+                     <#else>
+                        null,
+                </#if>
+                :title,
+                :content,
+                 <#if loginuserid?? && loginuserid!=''>
+                  :loginuserid,
+                     <#else>
+                       10,
+                </#if>
+                now()
+            )
+    	]]>
+    </sql>
+    <sql id="queryModulLevelList">
+        <![CDATA[
+        SELECT
+            a.id,
+            a.levelmodulename
+            FROM
+        help_level_module a
+        where 1=1 and level=1
+           	]]>
+    </sql>
+    <sql id="queryModulLevel2List">
+        <![CDATA[
+        SELECT
+            a.id,
+            a.pid,
+            a.levelmodulename
+            FROM
+        help_level_module a
+        where 1=1 and level=2
+     <#if id?? && id != ''>
+				and	 a.pid=:id
+		</#if>
+           	]]>
+    </sql>
+    <sql id="queryOnlyModulLevel2List">
+        <![CDATA[
+        SELECT
+            a.id,
+            a.pid,
+            a.levelmodulename
+            FROM
+        help_level_module a
+        where 1=1 and level=2
+           	]]>
+    </sql>
+
+    <sql id="updateHelp">
+        <![CDATA[
+           update help_center set
+                helptype = :helptype,
+                systemplatform=:systemplatform,
+                level1modulename = :level1modulename,
+                level2modulename = :level2modulename,
+                level1moduleid=:level1moduleid,
+                level2moduleid=:level2moduleid,
+                videourl = :url,
+                title = :title,
+                detail= :content,
+                <#if loginuserid?? && loginuserid != ''>
+                   createuser=:loginuserid,
+               <#else>
+                   createuser=10,
+           </#if>
+                updatetime= now()
+           where
+                id = :id
+
+        ]]>
+    </sql>
+
+    <sql id="deleteHelp">
+        <![CDATA[
+	delete  from help_center  where  id= :id
+        ]]>
+    </sql>
+
+    <sql id="queryhelpcenterInfo">
+        <![CDATA[
+        SELECT
+            a.id,
+            a.title as questiontitle,
+            a.systemplatform,
+            a.helptype,
+            a.level1modulename,
+             a.level1moduleid,
+              a.level2moduleid,
+            a.level2modulename,
+            a.updatetime,
+            a.detail,
+            a.videourl
+            FROM
+        help_center a
+        where 1=1
+         <#if id?? && id != ''>
+				and	 a.id=:id
+		</#if>
+
+           	]]>
+    </sql>
+
+    <sql id="getModProblemelList">
+        <![CDATA[
+        SELECT
+		  title,
+		  id as titleid,
+		  level1moduleid,
+		  level1modulename,
+		  level2moduleid,
+		  level2modulename,
+		  helptype,
+		  videourl,
+		  detail
+		FROM
+		  help_center
+		WHERE
+		  del=0
+		  AND  systemplatform= 1
+    	]]>
+    </sql>
+
+    <sql id="getModProblemelPageList">
+        <![CDATA[
+        SELECT
+		  title,
+		  id as titleid
+		FROM
+		  help_center
+		WHERE
+		<#if helptype??&&helptype!=''>
+		    helptype = :helptype
+		<#else>
+		    helptype = 1
+		</#if>
+		and level1moduleid=:level1moduleid
+		  <#if level2moduleid??&&level2moduleid!=''>
+		 and level2moduleid=:level2moduleid
+		  </#if>
+    	]]>
+    </sql>
+
+    <sql id="getModProblemelDetail">
+        <![CDATA[
+        SELECT
+		  title,
+		  id,
+		  detail,
+		  videourl
+		FROM
+		  help_center
+		WHERE
+		  id=:titleid
+		and del=0
+    	]]>
+    </sql>
+
+    <sql id="getHelpCenterPageListForApp">
+        <![CDATA[
+        SELECT
+          id,
+		  title,
+		  detail,
+		  videourl,
+		  level1moduleid,
+		  level1modulename,
+		  level2moduleid,
+		  level2modulename,
+		  date_format(createtime,'%Y-%m-%d %H:%i:%s') as createtime,
+		  date_format(updatetime,'%Y-%m-%d %H:%i:%s') as updatetime
+		FROM
+		  help_center
+		WHERE
+		  level1moduleid=:level1moduleid
+		<#if level2moduleid?? && level2moduleid!=''>
+		AND level2moduleid=:level2moduleid
+		</#if>
+		AND del=0
+    	]]>
+    </sql>
+
+    <sql id="getSearchHelpCenterForApp">
+        <![CDATA[
+        SELECT
+          id,
+		  title,
+		  detail,
+		  videourl,
+		  level1moduleid,
+		  level1modulename,
+		  level2moduleid,
+		  level2modulename,
+		  date_format(createtime,'%Y-%m-%d %H:%i:%s') as createtime,
+		  date_format(updatetime,'%Y-%m-%d %H:%i:%s') as updatetime
+		FROM
+		  help_center
+		WHERE title like '%' :title '%'
+		AND   del=0
+		AND   systemplatform=2
+    	]]>
+    </sql>
+
+</sqlMap>
